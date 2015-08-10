@@ -5,6 +5,17 @@ class DefaultController extends CController
 
     public function actionIndex()
     {
+        if (strpos(strtolower(Yii::app()->db->connectionString), 'mysql') !== false)
+        {
+            $_GET['username'] = Yii::app()->db->username;
+            $_GET['password'] = Yii::app()->db->password;
+            preg_match('/dbname=([a-zA-Z0-9_]{1,})/', Yii::app()->db->connectionString, $dbname);
+            if (isset($dbname[1]))
+            {
+                $_GET['db'] = $dbname[1];
+            }
+        }
+        
         include Yii::app()->params['adminerPath']."/include/bootstrap.inc.php";
         include Yii::app()->params['adminerPath']."/include/tmpfile.inc.php";
 
