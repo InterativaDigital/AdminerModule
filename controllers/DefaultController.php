@@ -8,11 +8,18 @@ class DefaultController extends CController
         if (strpos(strtolower(Yii::app()->db->connectionString), 'mysql') !== false)
         {
             $_GET['username'] = Yii::app()->db->username;
-            $_GET['password'] = Yii::app()->db->password;
+            $_GET['password'] = Yii::app()->db->password; // FIXME: Password is not used by Adminer through GET.
+            
             preg_match('/dbname=([a-zA-Z0-9_]{1,})/', Yii::app()->db->connectionString, $dbname);
             if (isset($dbname[1]))
             {
                 $_GET['db'] = $dbname[1];
+            }
+            
+            preg_match('/host=([a-zA-Z0-9_]{1,})/', Yii::app()->db->connectionString, $host);
+            if (isset($host[1]))
+            {
+                $_GET['server'] = $host[1];
             }
         }
         
